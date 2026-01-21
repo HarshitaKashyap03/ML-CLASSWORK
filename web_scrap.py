@@ -2,7 +2,9 @@
 """
 Scrape book titles, prices, and availability
 from https://books.toscrape.com/
-Saves results to: books_data.csv
+Saves results to:
+1. books_data.csv
+2. scrape_output.txt
 """
 
 import requests
@@ -25,13 +27,8 @@ def parse_books(html):
     availability = []
 
     for book in books:
-        # Title
         title = book.h3.a["title"]
-
-        # Price
         price = book.find("p", class_="price_color").text
-
-        # Availability
         stock = book.find("p", class_="instock availability").text.strip()
 
         titles.append(title)
@@ -51,9 +48,20 @@ def main():
     print("Parsing books...")
     df = parse_books(html)
 
+    # Save CSV
     df.to_csv("books_data.csv", index=False)
+
+    # Save OUTPUT to another file
+    with open("scrape_output.txt", "w") as f:
+        f.write("===== BOOK SCRAPING OUTPUT =====\n\n")
+        f.write("Website: https://books.toscrape.com/\n")
+        f.write(f"Total books scraped: {len(df)}\n\n")
+        f.write("First 10 books:\n\n")
+        f.write(df.head(10).to_string(index=False))
+
     print("Scraping Complete!")
     print(df.head(10).to_string(index=False))
+    print("\nOutput saved in scrape_output.txt")
 
 if __name__ == "__main__":
     main()

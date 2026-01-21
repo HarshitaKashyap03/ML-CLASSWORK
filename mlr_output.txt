@@ -1,0 +1,11 @@
+===== MULTIPLE LINEAR REGRESSION OUTPUT =====
+
+Number of data points: 1
+Number of features: 1
+
+Model Parameters:
+Intercept (b0): 0.10000000000000002
+Coefficient b1: 0.3
+
+Prediction:
+Predicted y: 0.7

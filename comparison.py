@@ -1,6 +1,7 @@
 # Import libraries
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -86,15 +87,66 @@ pred_dt_clf = dt_clf.predict(Xc_test)
 acc_dt = accuracy_score(yc_test, pred_dt_clf)
 
 # -------------------------------
-# RESULTS
+# SAVE RESULTS TO FILE
 # -------------------------------
-print("REGRESSION (RMSE)")
-print("Linear Regression (single):", rmse_lr_single)
-print("Multiple Linear Regression:", rmse_mlr)
-print("KNN Regression:", rmse_knn)
-print("Decision Tree Regression:", rmse_dt)
+with open("model_results.txt", "w") as f:
+    f.write("===== REGRESSION (RMSE) =====\n")
+    f.write(f"Linear Regression (single): {rmse_lr_single}\n")
+    f.write(f"Multiple Linear Regression: {rmse_mlr}\n")
+    f.write(f"KNN Regression: {rmse_knn}\n")
+    f.write(f"Decision Tree Regression: {rmse_dt}\n\n")
 
-print("\nCLASSIFICATION (Accuracy)")
-print("KNN Classifier:", acc_knn)
-print("Naive Bayes:", acc_nb)
-print("Decision Tree Classifier:", acc_dt)
+    f.write("===== CLASSIFICATION (Accuracy) =====\n")
+    f.write(f"KNN Classifier: {acc_knn}\n")
+    f.write(f"Naive Bayes: {acc_nb}\n")
+    f.write(f"Decision Tree Classifier: {acc_dt}\n")
+
+# -------------------------------
+# GRAPHS (Teacher requirement)
+# -------------------------------
+
+# Regression RMSE Bar Graph
+models_reg = [
+    "LR Single",
+    "MLR",
+    "KNN Reg",
+    "DT Reg"
+]
+rmse_values = [
+    rmse_lr_single,
+    rmse_mlr,
+    rmse_knn,
+    rmse_dt
+]
+
+plt.figure()
+plt.bar(models_reg, rmse_values)
+plt.title("Regression Models - RMSE Comparison")
+plt.ylabel("RMSE")
+plt.xlabel("Models")
+plt.savefig("regression_rmse.png")
+plt.close()
+
+# Classification Accuracy Bar Graph
+models_clf = [
+    "KNN",
+    "Naive Bayes",
+    "Decision Tree"
+]
+acc_values = [
+    acc_knn,
+    acc_nb,
+    acc_dt
+]
+
+plt.figure()
+plt.bar(models_clf, acc_values)
+plt.title("Classification Models - Accuracy Comparison")
+plt.ylabel("Accuracy")
+plt.xlabel("Models")
+plt.savefig("classification_accuracy.png")
+plt.close()
+
+print("DONE ✔")
+print("Results saved in model_results.txt")
+print("Graphs saved as regression_rmse.png and classification_accuracy.png")
